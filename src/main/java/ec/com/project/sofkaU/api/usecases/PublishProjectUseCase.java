@@ -9,24 +9,23 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.function.Function;
+
 @Service
 @AllArgsConstructor
-public class PublishProjectUseCase implements UpdateProject {
+public class PublishProjectUseCase implements Function<String, Mono<ProjectDTO>> {
 
     private final IProjectRepository iProjectRepository;
     private final ModelMapper mapper;
 
     @Override
-    public Mono<ProjectDTO> update(String projectId, ProjectDTO projectDTO) {
+    public Mono<ProjectDTO> apply(String projectId) {
         return this.iProjectRepository.findById(projectId)
                 .switchIfEmpty(Mono.empty())
-                .flatMap(book -> {
-                    projectDTO.setProjectID(projectId);
-                    return iProjectRepository.save(mapper.map(projectDTO, Project.class));
+                .flatMap(project -> {
+                    return iProjectRepository.save(project.publishProject())
+                            .map(publicProject -> mapper.map(publicProject, ProjectDTO.class));
                 })
-                .switchIfEmpty(Mono.empty())
-                .map(book -> mapper.map(book, ProjectDTO.class))
-                .map(savedBook -> mapper.map(savedBook, ProjectDTO.class))
                 .onErrorResume(Mono::error);
     }
 

@@ -9,6 +9,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.function.Function;
+
 @Service
 @AllArgsConstructor
 public class UpdateProjectUseCase implements UpdateProject {
@@ -20,12 +22,12 @@ public class UpdateProjectUseCase implements UpdateProject {
     public Mono<ProjectDTO> update(String projectId, ProjectDTO projectDTO) {
         return this.iProjectRepository.findById(projectId)
                 .switchIfEmpty(Mono.empty())
-                .flatMap(book -> {
+                .flatMap(project -> {
                     projectDTO.setProjectID(projectId);
                     return iProjectRepository.save(mapper.map(projectDTO, Project.class));
                 })
                 .switchIfEmpty(Mono.empty())
-                .map(book -> mapper.map(book, ProjectDTO.class))
+                .map(project -> mapper.map(project, ProjectDTO.class))
                 .map(savedBook -> mapper.map(savedBook, ProjectDTO.class))
                 .onErrorResume(Mono::error);
     }
