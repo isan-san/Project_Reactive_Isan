@@ -1,43 +1,55 @@
 package ec.com.project.sofkaU.api.usecases;
 
+import ec.com.project.sofkaU.api.domain.collection.Project;
+import ec.com.project.sofkaU.api.domain.dto.ProjectDTO;
+import ec.com.project.sofkaU.api.repository.IProjectRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith(MockitoExtension.class)
 class GetByIdUseCaseTest {
-/*
+
     @Mock
-    IPortfolioRepository repository;
+    IProjectRepository repository;
     ModelMapper modelMapper;
-    GetPortfolioByIdUseCase getStudentByIdUsecase;
+    GetProjectByIdUseCase getProjectByIdUseCase;
 
     @BeforeEach
     void init() {
         modelMapper = new ModelMapper();
-        getStudentByIdUsecase = new GetPortfolioByIdUseCase(repository, modelMapper);
+        getProjectByIdUseCase = new GetProjectByIdUseCase(repository, modelMapper);
     }
 
     @Test
-    @DisplayName("getAllBooks_Success")
+    @DisplayName("getById_Success")
     void getAllBooks() {
 
-        Portfolio student = new Portfolio();
-        student.setIdNumber("Test id");
-        student.setName("Test name");
-        student.setTheme("Test last name");
+        Project project = new Project();
+        project.setProjectID("Test id");
+        project.setName("Test name");
+        project.setSubject("Test last name");
 
         Mockito.when(repository.findById("1")).
                 thenAnswer(InvocationOnMock -> {
-                    return Mono.just(student);
+                    return Mono.just(project);
                 });
 
-        Mono<PortfolioDTO> response = getStudentByIdUsecase.apply("1");
+        Mono<ProjectDTO> response = getProjectByIdUseCase.apply("1");
 
         StepVerifier.create(response)
-                .expectNextCount(1)
+                .expectNext(modelMapper.map(project,ProjectDTO.class))
+                .expectNextCount(0)
                 .verifyComplete();
 
         Mockito.verify(repository).findById("1");
     }
-*/
+
 }

@@ -1,13 +1,24 @@
 package ec.com.project.sofkaU.api.usecases;
 
+import ec.com.project.sofkaU.api.domain.collection.Project;
+import ec.com.project.sofkaU.api.domain.dto.ProjectDTO;
+import ec.com.project.sofkaU.api.repository.IProjectRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith(MockitoExtension.class)
 class DeleteUseCaseTest {
-/*
+
     @Mock
-    IPortfolioRepository repository;
+    IProjectRepository repository;
     DeleteUsecase deleteUsecase;
 
     @BeforeEach
@@ -16,32 +27,31 @@ class DeleteUseCaseTest {
     }
 
     @Test
-    @DisplayName("getAllStudents_Success")
+    @DisplayName("delete_Success")
     void getAllStudents() {
 
-        Portfolio student = new Portfolio();
-        student.setIdNumber("Test id");
-        student.setName("Test name");
-        student.setTheme("Test last name");
-        student.setPortfolioID("Test student");
+        Project project = new Project();
+        project.setProjectID("Test id");
+        project.setName("Test name");
+        project.setSubject("Test last name");
 
-        Mockito.when(repository.findById("Test student")).
+        Mockito.when(repository.findById("Test project")).
                 thenAnswer(InvocationOnMock -> {
-                    return Mono.just(student);
+                    return Mono.just(project);
                 });
-        Mockito.when(repository.delete(student)).
+        Mockito.when(repository.delete(project)).
                 thenAnswer(InvocationOnMock -> {
                     return Mono.just(Void.TYPE);
                 });
 
-        Mono<String> response = deleteUsecase.apply("Test student");
+        Mono<String> response = deleteUsecase.apply("Test project");
 
         StepVerifier.create(response)
                 .expectNextCount(1)
                 .verifyComplete();
 
-        Mockito.verify(repository).delete(student);
-        Mockito.verify(repository).findById("Test student");
+        Mockito.verify(repository).delete(project);
+        Mockito.verify(repository).findById("Test project");
     }
-*/
+
 }

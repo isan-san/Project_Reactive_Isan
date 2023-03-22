@@ -1,49 +1,61 @@
 package ec.com.project.sofkaU.api.usecases;
 
+import ec.com.project.sofkaU.api.domain.collection.Project;
+import ec.com.project.sofkaU.api.domain.dto.ProjectDTO;
+import ec.com.project.sofkaU.api.repository.IProjectRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
+import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 
 @ExtendWith(MockitoExtension.class)
 class GetAllUseCaseTest {
-    /*
+    
     @Mock
-    IPortfolioRepository repository;
+    IProjectRepository repository;
     ModelMapper modelMapper;
-    GetAllPortfoliosUseCase getAllStudentsUsecase;
+    GetAllProjectUseCase getAllProjectUseCase;
 
     @BeforeEach
     void init() {
         modelMapper = new ModelMapper();
-        getAllStudentsUsecase = new GetAllPortfoliosUseCase(repository, modelMapper);
+        getAllProjectUseCase = new GetAllProjectUseCase(repository, modelMapper);
     }
 
     @Test
-    @DisplayName("getAllstudents_Success")
-    void getAllstudents() {
+    @DisplayName("getAll_Success")
+    void getAllprojects() {
 
-        Portfolio student = new Portfolio();
-        student.setIdNumber("Test id");
-        student.setName("Test name");
-        student.setTheme("Test last name");
+        Project project = new Project();
+        project.setProjectID("Test id");
+        project.setName("Test name");
+        project.setSubject("Test last name");
 
-        Portfolio student2 = new Portfolio();
-        student.setIdNumber("Test id2");
-        student.setName("Test name2");
-        student.setTheme("Test last name2");
+        Project project2 = new Project();
+        project2.setProjectID("Test id");
+        project2.setName("Test name");
+        project2.setSubject("Test last name");
 
         Mockito.when(repository.findAll()).
                 thenAnswer(InvocationOnMock -> {
-                    return Flux.just(student, student2);
+                    return Flux.just(project, project2);
                 });
 
-        Flux<PortfolioDTO> response = getAllStudentsUsecase.get();
+        Flux<ProjectDTO> response = getAllProjectUseCase.get();
 
         StepVerifier.create(response)
-                .expectNextCount(2)
+                .expectNext(modelMapper.map(project,ProjectDTO.class))
+                .expectNextCount(1)
                 .verifyComplete();
 
         Mockito.verify(repository).findAll();
     }
-*/
+
 }
