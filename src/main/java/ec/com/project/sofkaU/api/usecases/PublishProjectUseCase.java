@@ -29,5 +29,4 @@ public class PublishProjectUseCase implements Function<ProjectDTO, Mono<ProjectD
                 })
                 .onErrorResume(Mono::error);
     }
-
 }

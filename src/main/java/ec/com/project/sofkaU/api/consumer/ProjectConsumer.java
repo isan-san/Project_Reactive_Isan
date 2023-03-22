@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 
 @Component
 @AllArgsConstructor
@@ -15,6 +17,7 @@ public class ProjectConsumer {
 
     @RabbitListener(queues = RabbitConfig.PORTFOLIO_QUEUE)
     public void receivePortfolioEvent(PortfolioEvent message) {
-            publishProjectUseCase.apply(message.getProjectDTO()).block();
+            publishProjectUseCase.apply(message.getProjectDTO())
+                    .subscribe(System.out::println);
     }
 }
