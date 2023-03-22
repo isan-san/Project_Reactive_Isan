@@ -1,22 +1,20 @@
 package ec.com.project.sofkaU.api.consumer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import ec.com.project.sofkaU.api.config.RabbitConfig;
+import ec.com.project.sofkaU.api.domain.dto.ProjectDTO;
 import ec.com.project.sofkaU.api.usecases.PublishProjectUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
 @Component
 @AllArgsConstructor
 public class ProjectConsumer {
-    private final ObjectMapper objectMapper;
     private final PublishProjectUseCase publishProjectUseCase;
 
-    @RabbitListener(queues = "Project.Append.queue") //lending queue
-    public void receiveEventBook(String message) throws JsonProcessingException{
-        PortfolioEvent event = objectMapper.readValue(message, PortfolioEvent.class);
-        publishProjectUseCase.apply(event.getProjectID());
+    @RabbitListener(queues = RabbitConfig.PORTFOLIO_QUEUE)
+    public void receivePortfolioEvent(PortfolioEvent message) {
+            publishProjectUseCase.apply(message.getProjectDTO()).block();
     }
-
 }

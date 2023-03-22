@@ -71,7 +71,7 @@ public class ProjectRouter {
     @Bean
     public RouterFunction<ServerResponse> publishProject(PublishProjectUseCase publishProjectUseCase) {
         return route(PATCH("/project/{id}"),
-                request -> publishProjectUseCase.apply(request.pathVariable("id"))
+                request -> publishProjectUseCase.apply(new ProjectDTO(request.pathVariable("id")))
                         .flatMap(projectDTO -> ServerResponse.ok()
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .bodyValue(projectDTO))

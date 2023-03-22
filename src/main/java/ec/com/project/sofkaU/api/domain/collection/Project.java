@@ -23,10 +23,15 @@ public class Project {
 
     private Boolean isPublished = false;
 
+    public Project(String ID){
+        this.projectID = ID;
+    }
+
     public Project publishProject(){
         this.isPublished=true;
         return this;
     }
+
 
 }
 

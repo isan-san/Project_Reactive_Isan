@@ -19,4 +19,8 @@ public class ProjectDTO {
 
     private Boolean isPublished = false;
 
+    public ProjectDTO(String projectID){
+        this.projectID = projectID;
+    }
+
 }

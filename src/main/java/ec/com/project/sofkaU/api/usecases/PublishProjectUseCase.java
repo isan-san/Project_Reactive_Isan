@@ -11,16 +11,17 @@ import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
 
-@Service
 @AllArgsConstructor
-public class PublishProjectUseCase implements Function<String, Mono<ProjectDTO>> {
+@Service
+public class PublishProjectUseCase implements Function<ProjectDTO, Mono<ProjectDTO>> {
 
     private final IProjectRepository iProjectRepository;
     private final ModelMapper mapper;
 
     @Override
-    public Mono<ProjectDTO> apply(String projectId) {
-        return this.iProjectRepository.findById(projectId)
+    public Mono<ProjectDTO> apply(ProjectDTO projectDTO) {
+        return this.iProjectRepository
+                .findById(projectDTO.getProjectID())
                 .switchIfEmpty(Mono.empty())
                 .flatMap(project -> {
                     return iProjectRepository.save(project.publishProject())
